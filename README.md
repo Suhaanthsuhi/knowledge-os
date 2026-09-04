@@ -67,11 +67,17 @@ The central idea is:
 
 
 ## Phase 1:
-- first, we will setup model (groq/openai/gpt-oss-120b) and neo4j
+- first, we will setup groq model (groq/openai/gpt-oss-120b) and neo4j
 - test the model and neo4j connections
-- setup the folder structure
+- setup the project structure, environment config and python package
 
-## Phase 2: (Milestone 1)
-- we will prove that we can take raw text -> LLM -> structured entities + relationships -> Neo4j
+## Phase 2: (Milestone 1 - KnowledgeGraph POC)
+- we will prove that we can take, raw text -> LLM -> structured entities + relationships -> Neo4j
 - when given any textual information, model should be able to extract the meaningful entities and relationships
 - Text -> Knowledge Graph
+- we have to successfully create and query nodes + relationships in neo4j
+
+## Phase 3: (Milestone 2 - Reliable Knowledge Graph Ingestion)
+- build reusable GraphExtractor and graph ingestion pipdline
+- implement entity normalization and entity resolution to prevent duplicate entities
+- canonicalize entities and reliably upsert them into Neo4j
