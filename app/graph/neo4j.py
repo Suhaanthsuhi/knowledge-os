@@ -47,6 +47,34 @@ class Neo4jClient:
                 relationship=relationship.relationship,
             )
 
+    def find_entity_candidates(
+        self,
+        name: str,
+        entity_type: str,
+        limit: int = 10,
+    ):
+        with self.driver.session() as session:
+            result = session.run(
+                """
+                MATCH (e:Entity)
+                WHERE e.type = $type
+                AND toLower(e.name) CONTAINS toLower($name)
+                RETURN e.name AS name, e.type AS type
+                LIMIT $limit
+                """,
+                name=name,
+                type=entity_type,
+                limit=limit,
+            )
+
+            return [
+                {
+                    "name": record["name"],
+                    "type": record["type"],
+                }
+                for record in result
+            ]
+
     def close(self):
         self.driver.close()
 

@@ -2,25 +2,54 @@ from pydantic import BaseModel, Field
 
 
 class Entity(BaseModel):
-    """Entity schema"""
+    name: str = Field(
+        ...,
+        description="The name of the entity"
+    )
 
-    name: str = Field(..., description="The name of the entity")
-    type: str = Field(..., description="The type of the entity, example: Person, Company, Location, etc.")
+    type: str = Field(
+        ...,
+        description="The type of entity, e.g. Person, Company, Location"
+    )
 
 
 class Relationship(BaseModel):
-    """Relationship schema"""
+    source: str = Field(
+        ...,
+        description="The name of the source entity"
+    )
 
-    source: str = Field(..., description="The name of the source entity")
-    relationship: str = Field(..., description="The type of the relationship")
-    target: str = Field(..., description="The name of the target entity")
+    relationship: str = Field(
+        ...,
+        description="The relationship between the entities"
+    )
+
+    target: str = Field(
+        ...,
+        description="The name of the target entity"
+    )
 
 
 class KnowledgeGraph(BaseModel):
-    """Knowledge graph schema"""
-
-    entities: list[Entity] = Field(..., description="List of entities in the knowledge graph")
-    relationships: list[Relationship] = Field(..., description="List of relationships in the knowledge graph")
+    entities: list[Entity] = Field(default_factory=list)
+    relationships: list[Relationship] = Field(default_factory=list)
 
 
-__all__ = ["Entity", "Relationship", "KnowledgeGraph"]
+class EntityResolution(BaseModel):
+    match: bool = Field(
+        ...,
+        description="Whether the new entity matches an existing entity"
+    )
+
+    matched_entity: str | None = Field(
+        ...,
+        description="The exact name of the matching existing entity, or null if no match"
+    )
+
+
+__all__ = [
+    "Entity",
+    "Relationship",
+    "KnowledgeGraph",
+    "EntityResolution",
+]
