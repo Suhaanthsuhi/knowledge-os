@@ -4,4 +4,18 @@ version = "0.1.0"
 description = "A knowledge operating system for managing and organizing information."
 readme = "README.md"
 requires-python = ">=3.13"
-dependencies = []
+dependencies = [
+    "langchain-groq>=1.1.3",
+    "langchain[openai]>=1.4.0",
+    "neo4j>=6.3.0",
+    "pydantic-settings>=2.15.0",
+    "pydantic[email,timezone]>=2.13.5",
+]
+
+[dependency-groups]
+dev = [
+    "ipykernel>=7.3.0",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["app"]
