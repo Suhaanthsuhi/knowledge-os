@@ -39,6 +39,7 @@ class Passage:
 
 
 def passage_from_element_ref(ref: ElementRef, source_name: str = "") -> Passage:
+    """Convert a graph element into a searchable passage."""
     return Passage(
         doc_id=ref.doc_id,
         element_id=ref.id,
@@ -46,7 +47,7 @@ def passage_from_element_ref(ref: ElementRef, source_name: str = "") -> Passage:
         element_type=ref.type,
         text=ref.text,
         x0=ref.x0, y0=ref.y0, x1=ref.x1, y1=ref.y1,
-        source_name=source_name,
+        source_name=source_name or ref.source_name,
     )
 
 

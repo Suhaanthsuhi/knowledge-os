@@ -65,7 +65,8 @@ SET e.id = $id,
     e.page = $page,
     e.x0 = $x0, e.y0 = $y0, e.x1 = $x1, e.y1 = $y1,
     e.order = $order,
-    e.text = $text
+    e.text = $text,
+    e.source_name = $source_name
 """
 
 LINK_ELEMENT = """
@@ -141,7 +142,8 @@ MATCH (e:Element)
 WHERE e.gid IN $gids
 RETURN e.id AS id, e.doc_id AS doc_id, e.type AS type, e.page AS page,
        e.x0 AS x0, e.y0 AS y0, e.x1 AS x1, e.y1 AS y1,
-       e.order AS order, e.text AS text
+       e.order AS order, e.text AS text,
+       coalesce(e.source_name, '') AS source_name
 """
 
 # Counts only what this pipeline wrote. A graph may hold nodes and edges from

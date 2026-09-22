@@ -64,7 +64,13 @@ class RetrievalResult:
 
 
 class Retriever(Protocol):
-    def retrieve(self, question: str, *, limit: int = DEFAULT_LIMIT) -> RetrievalResult: ...
+    def retrieve(
+        self,
+        question: str,
+        *,
+        limit: int = DEFAULT_LIMIT,
+        extra_names: Sequence[str] = (),
+    ) -> RetrievalResult: ...
 
 
 def reciprocal_rank_fusion(
@@ -121,11 +127,25 @@ class GraphRetriever:
         self.analyzer = analyzer
         self.hops = max(1, min(hops, 3))
 
-    def retrieve(self, question: str, *, limit: int = DEFAULT_LIMIT) -> RetrievalResult:
-        names = self.analyzer.entity_names(question)
+    def retrieve(
+        self,
+        question: str,
+        *,
+        limit: int = DEFAULT_LIMIT,
+        extra_names: Sequence[str] = (),
+    ) -> RetrievalResult:
+        """`extra_names` are carried-forward seeds from earlier in a conversation.
+
+        A follow-up question rewritten imperfectly may name nothing the graph
+        knows. Seeding on what the previous turn matched keeps the traversal
+        anchored instead of silently falling back to lexical search alone.
+        """
+        found = self.analyzer.entity_names(question)
+        names = list(dict.fromkeys([*found, *extra_names]))
         seeds = self.store.find_entities(names) if names else []
         trace: dict[str, Any] = {
-            "seed_names": names,
+            "seed_names": found,
+            "carried_names": list(extra_names),
             "seed_keys": [seed.key for seed in seeds],
             "hops": self.hops,
         }
@@ -167,7 +187,15 @@ class Bm25Retriever:
     def __init__(self, index: Bm25Index) -> None:
         self.index = index
 
-    def retrieve(self, question: str, *, limit: int = DEFAULT_LIMIT) -> RetrievalResult:
+    def retrieve(
+        self,
+        question: str,
+        *,
+        limit: int = DEFAULT_LIMIT,
+        extra_names: Sequence[str] = (),
+    ) -> RetrievalResult:
+        # Carried names are a graph-seeding device; adding them to a lexical
+        # query would drag every earlier topic into the ranking.
         hits = self.index.search(question, limit=limit)
         return RetrievalResult(
             question=question,
@@ -186,9 +214,17 @@ class HybridRetriever:
         self.graph = graph
         self.lexical = lexical
 
-    def retrieve(self, question: str, *, limit: int = DEFAULT_LIMIT) -> RetrievalResult:
+    def retrieve(
+        self,
+        question: str,
+        *,
+        limit: int = DEFAULT_LIMIT,
+        extra_names: Sequence[str] = (),
+    ) -> RetrievalResult:
         # Over-fetch each arm so fusion has something to work with.
-        graph_result = self.graph.retrieve(question, limit=limit * 3)
+        graph_result = self.graph.retrieve(
+            question, limit=limit * 3, extra_names=extra_names
+        )
         lexical_result = self.lexical.retrieve(question, limit=limit * 3)
 
         passages: dict[str, Passage] = {}

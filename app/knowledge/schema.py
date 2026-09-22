@@ -146,6 +146,7 @@ class ElementRef(BaseModel):
     y1: float
     order: int
     text: str
+    source_name: str = ""
 
     @property
     def global_id(self) -> str:

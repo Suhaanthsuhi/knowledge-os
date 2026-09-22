@@ -67,6 +67,7 @@ class Neo4jGraphStore:
                 x0=element.x0, y0=element.y0, x1=element.x1, y1=element.y1,
                 order=element.order,
                 text=element.text,
+                source_name=element.source_name,
             )
             tx.run(cypher.LINK_ELEMENT, doc_id=element.doc_id, gid=element.global_id)
 
@@ -191,6 +192,7 @@ class Neo4jGraphStore:
                     x0=row["x0"], y0=row["y0"], x1=row["x1"], y1=row["y1"],
                     order=row["order"],
                     text=row["text"] or "",
+                    source_name=row["source_name"] or "",
                 )
                 for row in result
             ]

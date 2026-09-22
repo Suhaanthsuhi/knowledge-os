@@ -189,3 +189,79 @@ def test_a_document_with_no_content_produces_an_empty_upsert():
 
     assert upsert.entities == []
     assert upsert.facts == []
+
+
+def test_parallel_extraction_gives_the_same_result_as_sequential():
+    """The thread pool must not leak completion order into entity resolution."""
+    import threading
+
+    def _long_doc() -> Document:
+        elements = [_element("p1e000", ElementType.HEADING, 0, "Systems", level=1)]
+        for index in range(1, 7):
+            elements.append(
+                _element(
+                    f"p1e{index:03d}",
+                    ElementType.PARAGRAPH,
+                    index,
+                    f"Service{index} depends on Store{index}. " + "z" * 1500,
+                )
+            )
+        assign_parents(elements)
+        return Document(
+            id="par", source_name="p.md", mime="text/markdown", checksum="c",
+            pages=[Page(number=1, width=612, height=792, elements=elements)],
+        )
+
+    def handler(prompt: str, schema):
+        # Vary latency so completion order differs from submission order.
+        index = next(i for i in range(1, 7) if f"Service{i} depends" in prompt)
+        threading.Event().wait((7 - index) * 0.01)
+        return ChunkExtraction(
+            entities=[
+                ExtractedEntity(name=f"Service{index}", type=EntityType.SERVICE),
+                ExtractedEntity(name=f"Store{index}", type=EntityType.DATABASE),
+            ],
+            facts=[
+                ExtractedFact(
+                    source=f"Service{index}", relation=RelationType.DEPENDS_ON,
+                    target=f"Store{index}",
+                    evidence=f"Service{index} depends on Store{index}.",
+                )
+            ],
+        )
+
+    doc = _long_doc()
+    sequential = KnowledgePipeline(
+        KnowledgeExtractor(FakeLLM(handler=handler)), EntityResolver(None), max_workers=1
+    ).run(doc)
+    parallel = KnowledgePipeline(
+        KnowledgeExtractor(FakeLLM(handler=handler)), EntityResolver(None), max_workers=4
+    ).run(doc)
+
+    assert [e.key for e in parallel.entities] == [e.key for e in sequential.entities]
+    assert [f.model_dump() for f in parallel.facts] == [
+        f.model_dump() for f in sequential.facts
+    ]
+
+
+def test_a_failing_chunk_under_parallel_extraction_is_still_recorded():
+    def handler(prompt: str, schema):
+        if "Service2" in prompt:
+            raise RuntimeError("groq timeout")
+        return ChunkExtraction()
+
+    elements = [_element("p1e000", ElementType.HEADING, 0, "Systems", level=1)]
+    for index in range(1, 4):
+        elements.append(
+            _element(f"p1e{index:03d}", ElementType.PARAGRAPH, index,
+                     f"Service{index} runs. " + "z" * 1500)
+        )
+    assign_parents(elements)
+    doc = Document(id="fail", source_name="f.md", mime="text/markdown", checksum="c",
+                   pages=[Page(number=1, width=612, height=792, elements=elements)])
+
+    upsert = KnowledgePipeline(
+        KnowledgeExtractor(FakeLLM(handler=handler)), EntityResolver(None), max_workers=4
+    ).run(doc)
+
+    assert any(w["code"] == "chunk_failed" for w in upsert.warnings)

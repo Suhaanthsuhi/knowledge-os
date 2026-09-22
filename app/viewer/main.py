@@ -1,9 +1,9 @@
-"""Knowledge OS viewer.
+"""Knowledge OS.
 
     uv run streamlit run app/viewer/main.py
 
-Three modes: inspect the parsed Document IR, ingest a document into the
-knowledge graph, and ask questions answered from that graph.
+Chat with your documents, build the knowledge base, or inspect exactly what the
+parser made of any single file.
 """
 
 from __future__ import annotations
@@ -17,13 +17,13 @@ if str(ROOT) not in sys.path:
 
 import streamlit as st  # noqa: E402
 
-from app.viewer.modes import ask, ingest, inspect  # noqa: E402
+from app.viewer.modes import chat, corpus, inspect  # noqa: E402
 from app.viewer.theme import CSS  # noqa: E402
 
 MODES = {
+    "Chat": chat.render,
+    "Corpus": corpus.render,
     "Inspect": inspect.render,
-    "Ingest": ingest.render,
-    "Ask": ask.render,
 }
 
 
@@ -35,10 +35,11 @@ def main() -> None:
         initial_sidebar_state="expanded",
     )
     st.markdown(CSS, unsafe_allow_html=True)
-    st.title("Knowledge OS")
 
-    mode = st.sidebar.radio("Mode", list(MODES), key="mode")
+    st.sidebar.title("Knowledge OS")
+    mode = st.sidebar.radio("Mode", list(MODES), key="mode", label_visibility="collapsed")
     st.sidebar.divider()
+
     MODES[mode]()
 
 

@@ -74,11 +74,13 @@ def build_context(result: RetrievalResult) -> str:
     sections: list[str] = []
 
     if result.facts:
-        lines = [
-            f"- {fact.sentence()}  (hop {fact.hop}, from "
-            f"{', '.join(fact.global_element_ids()) or 'unknown'})"
-            for fact in result.facts
-        ]
+        lines = []
+        for fact in result.facts:
+            # Render provenance in the same bracket form as evidence, so a fact
+            # is citable too. Without this the model reads a fact, answers from
+            # it, and cites nothing.
+            cites = " ".join(f"[{gid}]" for gid in fact.global_element_ids())
+            lines.append(f"- {fact.sentence()}  (hop {fact.hop}) {cites}".rstrip())
         sections.append("Facts from the knowledge graph:\n" + "\n".join(lines))
 
     if result.evidence:

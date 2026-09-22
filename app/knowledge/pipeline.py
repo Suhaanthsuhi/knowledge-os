@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import re
+from concurrent.futures import ThreadPoolExecutor
 from typing import Callable, Mapping, Sequence
 
 from app.ir.model import Document, Element
@@ -60,6 +61,7 @@ def element_ref(doc: Document, element: Element) -> ElementRef:
         y1=element.bbox.y1,
         order=element.order,
         text=element.text_content(),
+        source_name=doc.source_name,
     )
 
 
@@ -71,9 +73,61 @@ class KnowledgePipeline:
     cost the whole document.
     """
 
-    def __init__(self, extractor: KnowledgeExtractor, resolver: EntityResolver) -> None:
+    def __init__(
+        self,
+        extractor: KnowledgeExtractor,
+        resolver: EntityResolver,
+        *,
+        max_workers: int = 4,
+    ) -> None:
         self.extractor = extractor
         self.resolver = resolver
+        self.max_workers = max(1, max_workers)
+
+    def _extract_all(
+        self,
+        chunks: list[Chunk],
+        upsert: GraphUpsert,
+        on_progress: Callable[[int, int], None] | None,
+    ) -> list[tuple[Chunk, object]]:
+        """Extract every chunk, in parallel when there is more than one.
+
+        These are network-bound model calls, so a thread pool is most of the
+        wall-clock win. Results are returned in chunk order regardless of
+        completion order, because resolution downstream must be deterministic.
+        """
+        results: list[tuple[Chunk, object]] = []
+        done = 0
+
+        def run(chunk: Chunk):
+            return self.extractor.extract(chunk)
+
+        if len(chunks) == 1 or self.max_workers == 1:
+            for chunk in chunks:
+                try:
+                    results.append((chunk, run(chunk)))
+                except Exception as error:
+                    upsert.add_warning("chunk_failed", f"{chunk.id}: {error}")
+                done += 1
+                if on_progress:
+                    on_progress(done, len(chunks))
+            return results
+
+        with ThreadPoolExecutor(max_workers=self.max_workers) as pool:
+            futures = {pool.submit(run, chunk): chunk for chunk in chunks}
+            collected: dict[str, tuple[Chunk, object]] = {}
+            for future, chunk in futures.items():
+                try:
+                    collected[chunk.id] = (chunk, future.result())
+                except Exception as error:
+                    upsert.add_warning("chunk_failed", f"{chunk.id}: {error}")
+                done += 1
+                if on_progress:
+                    on_progress(done, len(chunks))
+
+        # Restore chunk order: thread completion order must not leak into the
+        # entity registry, or resolution would depend on timing.
+        return [collected[chunk.id] for chunk in chunks if chunk.id in collected]
 
     def run(
         self,
@@ -98,15 +152,7 @@ class KnowledgePipeline:
         evidence_elements: dict[str, ElementRef] = {}
 
         chunks = chunk_document(doc)
-        for index, chunk in enumerate(chunks, start=1):
-            try:
-                extraction = self.extractor.extract(chunk)
-            except Exception as error:  # one bad chunk must not cost the document
-                upsert.add_warning("chunk_failed", f"{chunk.id}: {error}")
-                if on_progress:
-                    on_progress(index, len(chunks))
-                continue
-
+        for chunk, extraction in self._extract_all(chunks, upsert, on_progress):
             by_name: dict[str, ResolvedEntity] = {}
             for candidate in extraction.entities:
                 if not candidate.name.strip():
@@ -151,9 +197,6 @@ class KnowledgePipeline:
                         confidence=confidence,
                     )
                 )
-
-            if on_progress:
-                on_progress(index, len(chunks))
 
         upsert.entities = list(touched_entities.values())
         upsert.elements = list(evidence_elements.values())

@@ -200,15 +200,37 @@ Graph traversal supplies structure — "which team owns the service affected by 
 
 Answers may use only retrieved evidence. When retrieval returns nothing the app says so rather than letting the model answer from memory, and a citation naming an element that was not retrieved is **dropped and reported** rather than rendered — a fabricated citation that looks real is worse than a missing one.
 
-### Usage
+### The app
 
 ```bash
 uv run streamlit run app/viewer/main.py
 ```
 
-**Ingest** → pick a document → *Extract knowledge* → review each fact with its evidence quote and confidence → *Commit*. **Ask** → question → grounded answer, with tabs for citations, evidence (page and bbox), the graph path traversed, and a retrieval trace.
+Three modes.
 
-A **Reset graph** action sits behind a confirmation checkbox in Ingest's danger zone.
+**Chat** — ask questions in a conversation. Each turn is rewritten into a
+standalone question before retrieval, so "who owns it?" resolves against what
+came before. Because that rewrite is not always reliable, the entities the
+previous turn matched are also carried forward as graph seeds — a follow-up
+stays anchored even when the rewrite is poor. Every answer expands into its
+citations (file, page, bbox, snippet), the evidence retrieved, the graph path
+traversed with hop numbers, and a trace showing the rewritten query, the
+carried seeds and per-phase timings.
+
+**Corpus** — drop in many files at once, or pick from the bundled samples, and
+add them in one click. Each file reports its stage live (parsing → extracting →
+committing → done/failed) and then expands to show its facts with evidence
+quotes, its entities, and any warnings. A failure is confined to its own file:
+one unreadable PDF in a folder of twenty does not cost the other nineteen.
+*Review before committing* extracts without writing, for when you want to look
+first. Resetting the knowledge base sits behind a confirmation.
+
+**Inspect** — the single-document IR viewer, with live layout thresholds.
+
+Within a document, chunks extract in parallel; documents process sequentially,
+because the entity registry grows as it resolves and parallelising that would
+make deduplication depend on thread timing. A test asserts parallel output is
+identical to sequential under deliberately inverted completion order.
 
 ### Tests
 
