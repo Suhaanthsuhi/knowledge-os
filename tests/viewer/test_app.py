@@ -31,3 +31,18 @@ def test_every_bundled_document_renders_without_error():
     for option in options:
         app.selectbox[0].set_value(option).run()
         assert not app.exception, f"{option} raised {app.exception}"
+
+
+def test_every_mode_renders_without_exception():
+    for mode in ("Inspect", "Ingest", "Ask"):
+        app = AppTest.from_file(APP, default_timeout=120).run()
+        app.sidebar.radio[0].set_value(mode).run()
+        assert not app.exception, f"{mode} raised {app.exception}"
+
+
+def test_the_ask_mode_reports_how_much_is_indexed():
+    app = AppTest.from_file(APP, default_timeout=120).run()
+    app.sidebar.radio[0].set_value("Ask").run()
+
+    assert not app.exception
+    assert any("passages indexed" in caption.value for caption in app.sidebar.caption)

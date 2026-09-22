@@ -168,3 +168,55 @@ Pick a bundled fixture or upload a PDF, Markdown file, screenshot or spreadsheet
 The sidebar exposes the `LayoutConfig` thresholds as live controls. Move the heading size ratio, gutter width or caption distance, hit **Apply thresholds**, and watch elements reclassify on the page — which is how you diagnose a real-world PDF that parses badly, rather than editing code and re-running.
 
 Rendering lives in `app/viewer/render.py` as pure functions over the IR, so it is unit-tested independently of Streamlit. `app/ir`, `app/parsing` and `app/storage` never import the viewer.
+
+---
+
+## Knowledge graph and GraphRAG
+
+Committing a document writes the parsed IR to the document store and its entities and relationships to Neo4j, where **every fact carries the element it came from**:
+
+```
+(:Document)-[:HAS_ELEMENT]->(:Element)<-[:MENTIONED_IN]-(:Entity)
+(:Entity)-[:DEPENDS_ON {doc_id, element_ids, evidence}]->(:Entity)
+```
+
+Relationship types are real Cypher types drawn from a closed vocabulary (`OWNS`, `DEPENDS_ON`, `USES`, `AFFECTS`, `DOCUMENTED_BY`, `BELONGS_TO`, `CREATED_BY`, `RESOLVES`, `PART_OF`, `RELATED_TO`), so `MATCH (s)-[:DEPENDS_ON]->(d)` actually traverses. Types are validated against the enum before being interpolated — model output never reaches query construction unchecked.
+
+### Provenance is the point
+
+Extraction asks the model for a **verbatim evidence quote** per fact, then matches that quote back against the individual elements of the chunk. A matched quote pins the fact to one element, so a citation resolves to a rectangle on a page rather than merely to a document. Where the quote cannot be matched, the fact is kept and marked `confidence: low` rather than silently dropped.
+
+Entity resolution is deterministic first: a normalized `type|name` key settles case, punctuation and whitespace variants for free, and the model is consulted only when a genuine judgement is needed. `MERGE` on that key means re-ingesting a document creates no duplicates.
+
+### Retrieval
+
+```
+question → entities → seed nodes → k-hop traversal ─┐
+                                                     ├─ RRF → evidence → answer
+                          BM25 over every element ──┘
+```
+
+Graph traversal supplies structure — "which team owns the service affected by INC-2391" is a path, not a similarity — while BM25 catches exact identifiers like `INC-2391` and `PAYMENT_502`, where vector search is weakest. The two rankings fuse with Reciprocal Rank Fusion, which needs no weights to tune.
+
+Answers may use only retrieved evidence. When retrieval returns nothing the app says so rather than letting the model answer from memory, and a citation naming an element that was not retrieved is **dropped and reported** rather than rendered — a fabricated citation that looks real is worse than a missing one.
+
+### Usage
+
+```bash
+uv run streamlit run app/viewer/main.py
+```
+
+**Ingest** → pick a document → *Extract knowledge* → review each fact with its evidence quote and confidence → *Commit*. **Ask** → question → grounded answer, with tabs for citations, evidence (page and bbox), the graph path traversed, and a retrieval trace.
+
+A **Reset graph** action sits behind a confirmation checkbox in Ingest's danger zone.
+
+### Tests
+
+The suite runs fully offline: every model call goes through a `StructuredLLM` protocol that tests satisfy with `FakeLLM`, and every graph call through a `GraphStore` protocol satisfied by `InMemoryGraphStore`.
+
+```bash
+uv run pytest                                  # offline: no Neo4j, no Groq
+KOS_NEO4J_TESTS=1 uv run pytest tests/graph    # also hit the real database
+```
+
+Integration tests write under a unique document id and delete exactly what they created, by exact key.
