@@ -1,0 +1,142 @@
+{
+  "checksum": "b475cc98a67d9688435675cadad46db6b3d01b22e2b4395aa958891011e4ee14",
+  "id": "b475cc98a67d9688",
+  "meta": {
+    "line_count": 13,
+    "page_count": 1,
+    "parser": "markdown",
+    "parser_version": "1"
+  },
+  "mime": "text/markdown",
+  "pages": [
+    {
+      "elements": [
+        {
+          "attrs": {
+            "synthetic_bbox": true
+          },
+          "bbox": {
+            "x0": 72.0,
+            "x1": 540.0,
+            "y0": 72.0,
+            "y1": 86.0
+          },
+          "id": "p1e000",
+          "image": null,
+          "level": 1,
+          "order": 0,
+          "page_number": 1,
+          "parent_id": null,
+          "table": null,
+          "text": "Payment System",
+          "type": "heading"
+        },
+        {
+          "attrs": {
+            "synthetic_bbox": true
+          },
+          "bbox": {
+            "x0": 72.0,
+            "x1": 540.0,
+            "y0": 100.0,
+            "y1": 114.0
+          },
+          "id": "p1e001",
+          "image": null,
+          "level": null,
+          "order": 1,
+          "page_number": 1,
+          "parent_id": "p1e000",
+          "table": null,
+          "text": "The Payment API is responsible for processing payment requests.",
+          "type": "paragraph"
+        },
+        {
+          "attrs": {
+            "synthetic_bbox": true
+          },
+          "bbox": {
+            "x0": 72.0,
+            "x1": 540.0,
+            "y0": 128.0,
+            "y1": 156.0
+          },
+          "id": "p1e002",
+          "image": null,
+          "level": null,
+          "order": 2,
+          "page_number": 1,
+          "parent_id": "p1e000",
+          "table": null,
+          "text": "The Payment API depends on Redis for caching and PostgreSQL for\npersistent storage.",
+          "type": "paragraph"
+        },
+        {
+          "attrs": {
+            "synthetic_bbox": true
+          },
+          "bbox": {
+            "x0": 72.0,
+            "x1": 540.0,
+            "y0": 170.0,
+            "y1": 184.0
+          },
+          "id": "p1e003",
+          "image": null,
+          "level": null,
+          "order": 3,
+          "page_number": 1,
+          "parent_id": "p1e000",
+          "table": null,
+          "text": "The Payments Team owns the Payment API.",
+          "type": "paragraph"
+        },
+        {
+          "attrs": {
+            "synthetic_bbox": true
+          },
+          "bbox": {
+            "x0": 72.0,
+            "x1": 540.0,
+            "y0": 198.0,
+            "y1": 226.0
+          },
+          "id": "p1e004",
+          "image": null,
+          "level": null,
+          "order": 4,
+          "page_number": 1,
+          "parent_id": "p1e000",
+          "table": null,
+          "text": "Incident INC-2391 affected the Payment API due to Redis connection\ntimeouts.",
+          "type": "paragraph"
+        },
+        {
+          "attrs": {
+            "synthetic_bbox": true
+          },
+          "bbox": {
+            "x0": 72.0,
+            "x1": 540.0,
+            "y0": 240.0,
+            "y1": 254.0
+          },
+          "id": "p1e005",
+          "image": null,
+          "level": null,
+          "order": 5,
+          "page_number": 1,
+          "parent_id": "p1e000",
+          "table": null,
+          "text": "The incident was resolved by the Payments Team.",
+          "type": "paragraph"
+        }
+      ],
+      "height": 326.0,
+      "number": 1,
+      "width": 612.0
+    }
+  ],
+  "source_name": "payment_system.md",
+  "title": "Payment System"
+}

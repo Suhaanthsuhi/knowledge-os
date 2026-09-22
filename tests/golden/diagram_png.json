@@ -1,0 +1,48 @@
+{
+  "checksum": "2db645d5db8c537a20e2886587dc0d6027a07988c0cd1870133316eaf67d0635",
+  "id": "2db645d5db8c537a",
+  "meta": {
+    "image_format": "PNG",
+    "page_count": 1,
+    "parser": "image",
+    "parser_version": "1"
+  },
+  "mime": "image/png",
+  "pages": [
+    {
+      "elements": [
+        {
+          "attrs": {
+            "standalone": true
+          },
+          "bbox": {
+            "x0": 0.0,
+            "x1": 480.0,
+            "y0": 0.0,
+            "y1": 300.0
+          },
+          "id": "p1e000",
+          "image": {
+            "blob_ref": "p1_i000.png",
+            "caption_id": null,
+            "format": "png",
+            "height": 300,
+            "width": 480
+          },
+          "level": null,
+          "order": 0,
+          "page_number": 1,
+          "parent_id": null,
+          "table": null,
+          "text": null,
+          "type": "image"
+        }
+      ],
+      "height": 300.0,
+      "number": 1,
+      "width": 480.0
+    }
+  ],
+  "source_name": "diagram.png",
+  "title": "diagram.png"
+}

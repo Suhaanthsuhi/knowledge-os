@@ -1,0 +1,131 @@
+{
+  "checksum": "516fdfa07949d96079dfd7c0adb681bdb8087f9476e61a5b65af042bfd25e855",
+  "id": "516fdfa07949d960",
+  "meta": {
+    "page_count": 1,
+    "parser": "pdf",
+    "parser_version": "1"
+  },
+  "mime": "application/pdf",
+  "pages": [
+    {
+      "elements": [
+        {
+          "attrs": {
+            "bold": true,
+            "font_size": 18.0
+          },
+          "bbox": {
+            "x0": 72.0,
+            "x1": 222.07,
+            "y0": 52.74,
+            "y1": 77.53
+          },
+          "id": "p1e000",
+          "image": null,
+          "level": 1,
+          "order": 0,
+          "page_number": 1,
+          "parent_id": null,
+          "table": null,
+          "text": "Service Inventory",
+          "type": "heading"
+        },
+        {
+          "attrs": {},
+          "bbox": {
+            "x0": 72.0,
+            "x1": 540.0,
+            "y0": 102.0,
+            "y1": 190.0
+          },
+          "id": "p1e001",
+          "image": null,
+          "level": null,
+          "order": 1,
+          "page_number": 1,
+          "parent_id": "p1e000",
+          "table": {
+            "cell_bboxes": null,
+            "headers": [
+              "Service",
+              "Datastore",
+              "Owner"
+            ],
+            "n_cols": 3,
+            "n_rows": 3,
+            "rows": [
+              [
+                "Payment API",
+                "PostgreSQL",
+                "Payments Team"
+              ],
+              [
+                "Ledger",
+                "Redis",
+                "Payments Team"
+              ],
+              [
+                "Gateway",
+                "None",
+                "Platform Team"
+              ]
+            ]
+          },
+          "text": null,
+          "type": "table"
+        },
+        {
+          "attrs": {},
+          "bbox": {
+            "x0": 120.0,
+            "x1": 480.0,
+            "y0": 267.0,
+            "y1": 492.0
+          },
+          "id": "p1e002",
+          "image": {
+            "blob_ref": "p1_i000.png",
+            "caption_id": "p1e003",
+            "format": "png",
+            "height": 300,
+            "width": 480
+          },
+          "level": null,
+          "order": 2,
+          "page_number": 1,
+          "parent_id": "p1e000",
+          "table": null,
+          "text": null,
+          "type": "image"
+        },
+        {
+          "attrs": {
+            "captions": "p1e002",
+            "font_size": 9.0
+          },
+          "bbox": {
+            "x0": 120.0,
+            "x1": 274.05,
+            "y0": 496.33,
+            "y1": 508.69
+          },
+          "id": "p1e003",
+          "image": null,
+          "level": null,
+          "order": 3,
+          "page_number": 1,
+          "parent_id": "p1e000",
+          "table": null,
+          "text": "Figure 1: Payment service architecture",
+          "type": "caption"
+        }
+      ],
+      "height": 792.0,
+      "number": 1,
+      "width": 612.0
+    }
+  ],
+  "source_name": "table_figure.pdf",
+  "title": "Service Inventory"
+}

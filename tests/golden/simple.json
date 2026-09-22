@@ -1,0 +1,123 @@
+{
+  "checksum": "d25f5d9b26700e1120d956cd26435d4ba382c8e0d8e9cff308a0e80d27a4629c",
+  "id": "d25f5d9b26700e11",
+  "meta": {
+    "page_count": 1,
+    "parser": "pdf",
+    "parser_version": "1"
+  },
+  "mime": "application/pdf",
+  "pages": [
+    {
+      "elements": [
+        {
+          "attrs": {
+            "bold": true,
+            "font_size": 18.0
+          },
+          "bbox": {
+            "x0": 72.0,
+            "x1": 258.05,
+            "y0": 52.74,
+            "y1": 77.53
+          },
+          "id": "p1e000",
+          "image": null,
+          "level": 1,
+          "order": 0,
+          "page_number": 1,
+          "parent_id": null,
+          "table": null,
+          "text": "Payment Architecture",
+          "type": "heading"
+        },
+        {
+          "attrs": {
+            "font_size": 11.0
+          },
+          "bbox": {
+            "x0": 72.0,
+            "x1": 394.19,
+            "y0": 94.18,
+            "y1": 137.29
+          },
+          "id": "p1e001",
+          "image": null,
+          "level": null,
+          "order": 1,
+          "page_number": 1,
+          "parent_id": "p1e000",
+          "table": null,
+          "text": "The Payment API is responsible for processing payment requests.\nIt validates each request, reserves funds, and writes an entry to\nthe ledger before acknowledging the caller.",
+          "type": "paragraph"
+        },
+        {
+          "attrs": {
+            "bold": true,
+            "font_size": 14.0
+          },
+          "bbox": {
+            "x0": 72.0,
+            "x1": 166.92,
+            "y0": 151.02,
+            "y1": 170.3
+          },
+          "id": "p1e002",
+          "image": null,
+          "level": 2,
+          "order": 2,
+          "page_number": 1,
+          "parent_id": "p1e000",
+          "table": null,
+          "text": "Dependencies",
+          "type": "heading"
+        },
+        {
+          "attrs": {
+            "font_size": 11.0
+          },
+          "bbox": {
+            "x0": 72.0,
+            "x1": 406.46,
+            "y0": 182.18,
+            "y1": 211.29
+          },
+          "id": "p1e003",
+          "image": null,
+          "level": null,
+          "order": 3,
+          "page_number": 1,
+          "parent_id": "p1e002",
+          "table": null,
+          "text": "The Payment API depends on Redis for caching and on PostgreSQL\nfor persistent storage. The Payments Team owns the service.",
+          "type": "paragraph"
+        },
+        {
+          "attrs": {
+            "font_size": 8.0
+          },
+          "bbox": {
+            "x0": 264.87,
+            "x1": 347.13,
+            "y0": 743.4,
+            "y1": 754.39
+          },
+          "id": "p1e004",
+          "image": null,
+          "level": null,
+          "order": 4,
+          "page_number": 1,
+          "parent_id": "p1e002",
+          "table": null,
+          "text": "Knowledge OS Internal",
+          "type": "paragraph"
+        }
+      ],
+      "height": 792.0,
+      "number": 1,
+      "width": 612.0
+    }
+  ],
+  "source_name": "simple.pdf",
+  "title": "Payment Architecture"
+}

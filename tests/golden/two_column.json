@@ -1,0 +1,390 @@
+{
+  "checksum": "ab4fb0635f58386aca3836b9196198df14ae98f786aa64df00b97584e74e3be3",
+  "id": "ab4fb0635f58386a",
+  "meta": {
+    "page_count": 2,
+    "parser": "pdf",
+    "parser_version": "1"
+  },
+  "mime": "application/pdf",
+  "pages": [
+    {
+      "elements": [
+        {
+          "attrs": {
+            "font_size": 9.0
+          },
+          "bbox": {
+            "x0": 72.0,
+            "x1": 187.05,
+            "y0": 32.33,
+            "y1": 44.69
+          },
+          "id": "p1e000",
+          "image": null,
+          "level": null,
+          "order": 0,
+          "page_number": 1,
+          "parent_id": null,
+          "table": null,
+          "text": "Payment Platform Handbook",
+          "type": "header"
+        },
+        {
+          "attrs": {
+            "bold": true,
+            "font_size": 16.0
+          },
+          "bbox": {
+            "x0": 72.0,
+            "x1": 143.14,
+            "y0": 68.88,
+            "y1": 90.91
+          },
+          "id": "p1e001",
+          "image": null,
+          "level": 1,
+          "order": 1,
+          "page_number": 1,
+          "parent_id": null,
+          "table": null,
+          "text": "Section 1",
+          "type": "heading"
+        },
+        {
+          "attrs": {
+            "font_size": 11.0
+          },
+          "bbox": {
+            "x0": 72.0,
+            "x1": 221.19,
+            "y0": 110.18,
+            "y1": 139.29
+          },
+          "id": "p1e002",
+          "image": null,
+          "level": null,
+          "order": 2,
+          "page_number": 1,
+          "parent_id": "p1e001",
+          "table": null,
+          "text": "Incident INC-2391 affected the\nPayment API in production.",
+          "type": "paragraph"
+        },
+        {
+          "attrs": {
+            "font_size": 11.0
+          },
+          "bbox": {
+            "x0": 72.0,
+            "x1": 225.45,
+            "y0": 166.18,
+            "y1": 195.29
+          },
+          "id": "p1e003",
+          "image": null,
+          "level": null,
+          "order": 3,
+          "page_number": 1,
+          "parent_id": "p1e001",
+          "table": null,
+          "text": "Redis connection timeouts rose\nsharply during peak traffic.",
+          "type": "paragraph"
+        },
+        {
+          "attrs": {
+            "font_size": 11.0
+          },
+          "bbox": {
+            "x0": 72.0,
+            "x1": 227.28,
+            "y0": 222.18,
+            "y1": 251.29
+          },
+          "id": "p1e004",
+          "image": null,
+          "level": null,
+          "order": 4,
+          "page_number": 1,
+          "parent_id": "p1e001",
+          "table": null,
+          "text": "The Payments Team resolved it\nby resizing the pool.",
+          "type": "paragraph"
+        },
+        {
+          "attrs": {
+            "font_size": 11.0
+          },
+          "bbox": {
+            "x0": 340.0,
+            "x1": 496.52,
+            "y0": 110.18,
+            "y1": 139.29
+          },
+          "id": "p1e005",
+          "image": null,
+          "level": null,
+          "order": 5,
+          "page_number": 1,
+          "parent_id": "p1e001",
+          "table": null,
+          "text": "The Gateway routes requests to\nthe Payment API over gRPC.",
+          "type": "paragraph"
+        },
+        {
+          "attrs": {
+            "font_size": 11.0
+          },
+          "bbox": {
+            "x0": 340.0,
+            "x1": 502.65,
+            "y0": 166.18,
+            "y1": 195.29
+          },
+          "id": "p1e006",
+          "image": null,
+          "level": null,
+          "order": 6,
+          "page_number": 1,
+          "parent_id": "p1e001",
+          "table": null,
+          "text": "PostgreSQL holds the ledger and\nthe settlement records.",
+          "type": "paragraph"
+        },
+        {
+          "attrs": {
+            "font_size": 11.0
+          },
+          "bbox": {
+            "x0": 340.0,
+            "x1": 481.22,
+            "y0": 222.18,
+            "y1": 251.29
+          },
+          "id": "p1e007",
+          "image": null,
+          "level": null,
+          "order": 7,
+          "page_number": 1,
+          "parent_id": "p1e001",
+          "table": null,
+          "text": "The Platform Team owns the\nGateway and its runbook.",
+          "type": "paragraph"
+        },
+        {
+          "attrs": {
+            "font_size": 9.0
+          },
+          "bbox": {
+            "x0": 303.5,
+            "x1": 308.5,
+            "y0": 742.33,
+            "y1": 754.69
+          },
+          "id": "p1e008",
+          "image": null,
+          "level": null,
+          "order": 8,
+          "page_number": 1,
+          "parent_id": "p1e001",
+          "table": null,
+          "text": "1",
+          "type": "page_number"
+        }
+      ],
+      "height": 792.0,
+      "number": 1,
+      "width": 612.0
+    },
+    {
+      "elements": [
+        {
+          "attrs": {
+            "font_size": 9.0
+          },
+          "bbox": {
+            "x0": 72.0,
+            "x1": 187.05,
+            "y0": 32.33,
+            "y1": 44.69
+          },
+          "id": "p2e000",
+          "image": null,
+          "level": null,
+          "order": 9,
+          "page_number": 2,
+          "parent_id": "p1e001",
+          "table": null,
+          "text": "Payment Platform Handbook",
+          "type": "header"
+        },
+        {
+          "attrs": {
+            "bold": true,
+            "font_size": 16.0
+          },
+          "bbox": {
+            "x0": 72.0,
+            "x1": 143.14,
+            "y0": 68.88,
+            "y1": 90.91
+          },
+          "id": "p2e001",
+          "image": null,
+          "level": 1,
+          "order": 10,
+          "page_number": 2,
+          "parent_id": null,
+          "table": null,
+          "text": "Section 2",
+          "type": "heading"
+        },
+        {
+          "attrs": {
+            "font_size": 11.0
+          },
+          "bbox": {
+            "x0": 72.0,
+            "x1": 221.19,
+            "y0": 110.18,
+            "y1": 139.29
+          },
+          "id": "p2e002",
+          "image": null,
+          "level": null,
+          "order": 11,
+          "page_number": 2,
+          "parent_id": "p2e001",
+          "table": null,
+          "text": "Incident INC-2391 affected the\nPayment API in production.",
+          "type": "paragraph"
+        },
+        {
+          "attrs": {
+            "font_size": 11.0
+          },
+          "bbox": {
+            "x0": 72.0,
+            "x1": 225.45,
+            "y0": 166.18,
+            "y1": 195.29
+          },
+          "id": "p2e003",
+          "image": null,
+          "level": null,
+          "order": 12,
+          "page_number": 2,
+          "parent_id": "p2e001",
+          "table": null,
+          "text": "Redis connection timeouts rose\nsharply during peak traffic.",
+          "type": "paragraph"
+        },
+        {
+          "attrs": {
+            "font_size": 11.0
+          },
+          "bbox": {
+            "x0": 72.0,
+            "x1": 227.28,
+            "y0": 222.18,
+            "y1": 251.29
+          },
+          "id": "p2e004",
+          "image": null,
+          "level": null,
+          "order": 13,
+          "page_number": 2,
+          "parent_id": "p2e001",
+          "table": null,
+          "text": "The Payments Team resolved it\nby resizing the pool.",
+          "type": "paragraph"
+        },
+        {
+          "attrs": {
+            "font_size": 11.0
+          },
+          "bbox": {
+            "x0": 340.0,
+            "x1": 496.52,
+            "y0": 110.18,
+            "y1": 139.29
+          },
+          "id": "p2e005",
+          "image": null,
+          "level": null,
+          "order": 14,
+          "page_number": 2,
+          "parent_id": "p2e001",
+          "table": null,
+          "text": "The Gateway routes requests to\nthe Payment API over gRPC.",
+          "type": "paragraph"
+        },
+        {
+          "attrs": {
+            "font_size": 11.0
+          },
+          "bbox": {
+            "x0": 340.0,
+            "x1": 502.65,
+            "y0": 166.18,
+            "y1": 195.29
+          },
+          "id": "p2e006",
+          "image": null,
+          "level": null,
+          "order": 15,
+          "page_number": 2,
+          "parent_id": "p2e001",
+          "table": null,
+          "text": "PostgreSQL holds the ledger and\nthe settlement records.",
+          "type": "paragraph"
+        },
+        {
+          "attrs": {
+            "font_size": 11.0
+          },
+          "bbox": {
+            "x0": 340.0,
+            "x1": 481.22,
+            "y0": 222.18,
+            "y1": 251.29
+          },
+          "id": "p2e007",
+          "image": null,
+          "level": null,
+          "order": 16,
+          "page_number": 2,
+          "parent_id": "p2e001",
+          "table": null,
+          "text": "The Platform Team owns the\nGateway and its runbook.",
+          "type": "paragraph"
+        },
+        {
+          "attrs": {
+            "font_size": 9.0
+          },
+          "bbox": {
+            "x0": 303.5,
+            "x1": 308.5,
+            "y0": 742.33,
+            "y1": 754.69
+          },
+          "id": "p2e008",
+          "image": null,
+          "level": null,
+          "order": 17,
+          "page_number": 2,
+          "parent_id": "p2e001",
+          "table": null,
+          "text": "2",
+          "type": "page_number"
+        }
+      ],
+      "height": 792.0,
+      "number": 2,
+      "width": 612.0
+    }
+  ],
+  "source_name": "two_column.pdf",
+  "title": "Section 1"
+}
